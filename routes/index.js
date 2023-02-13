@@ -111,13 +111,17 @@ async function createImage() {
 }
 
 
-router.get('/', async function (req, res) {
+router.get('/data', async function (req, res) {
     //replace random numbers with stuff from the database.
     //query database within the function
     //(maybe need to loop through rows)
     //0. make the chart look like what i want, with static random data
     //2. successfully console log the data and that it looks like data that should go into the chart
     //3. instead of printing it then JSON Stringify it and and send it as a response
+
+    //http://localhost:3000/   chart now lives here
+    //data now lives here
+    //practice querrying in the console
 
     //NO MORE SSR
     const numbers = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
