@@ -62,9 +62,9 @@ const chartCallback = (ChartJs) => {
 }
 
 async function createImage() {
-    // const labels = Utils.months({count: 7});
+    const labels = Utils.months({count: 7});
     const data = {
-        labels: [1, 2, 3, 4, 5, 6, 7],
+        labels: labels,
         datasets: [{
             label: 'My First Dataset',
             data: [65, 59, 80, 81, 56, 55, 40],
@@ -130,24 +130,7 @@ router.get('/data', async function (req, res) {
     //   const image = await createImage()
     //   //res.type("image/png")
     //   //res.send(image)
-    //   res.send( '<html>'+
-    //       '<head></head>'+
-    //       '<body>'+
-    //       //'<img src = "${image}" />' +
-    //       // '<img src = {image} />' +
-    //       '<img src="' + image + '"/>' +
-    //       //'<img src = image />' +
-    //       //'<img src= +image+>'+
-    //       //^this does not quite work. shows like the little 'not found image icon' thingie.
     //
-    //       // '<img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUA\n' +
-    //       // '    AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO\n' +
-    //       // '        9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />'+
-    //       //^this works
-    //       '</body>'+
-    //       '</html>')
-    //   console.log(image);
-    //   console.log('wheeee');
     // }catch (err){
     //   console.log(err)
     // }
@@ -157,10 +140,6 @@ router.get('/data', async function (req, res) {
     // //console.log(req.body);
 });
 
-
-module.exports = {
-    createImage   //for exporting to another file
-}
 
 
 module.exports = router;
