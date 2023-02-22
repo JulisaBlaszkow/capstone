@@ -30,6 +30,7 @@ let db = new sqlite3.Database('data.db', (err) => {
 
     console.log('connected to in memory SQlite database');
 });
+
 // db.close((err)=>{
 //   if (err) {
 //     return console.error(err.message);
@@ -111,6 +112,45 @@ async function createImage() {
 }
 
 
+let sql = "SELECT x date, " +
+    "y val, " +
+    "z day  " +
+    "FROM experiment " +
+    " WHERE z = ?";
+
+//let results = [];
+
+// function TableExtract (db, callback){
+//
+//     db.all(sql,[1], (err,rows) => {
+//         if (err){
+//             throw err;
+//         }
+//         else{
+//             // console.log("read from experiment: " + row.date  + "  "+ row.val + "  " + row.day );
+//             rows.forEach((row)=>{
+//                 results.push(row.val);
+//             });
+//         }
+//         console.log(results);
+//
+//     });
+// }
+
+// TableExtract(db, function(err,content){
+//     if(err) throw (err);
+//     let Extractedval = content;
+//     console.log = ("wheee" , Extractedval);
+//     return Extractedval
+// });
+
+// const TableInside = TableExtract(db, function(err,content){
+//     if(err) throw (err);
+//     let Extractedval = content;
+//     console.log = ("wheee" , Extractedval);
+//     return Extractedval
+// })
+
 router.get('/data', async function (req, res) {
     //replace random numbers with stuff from the database.
     //query database within the function
@@ -123,9 +163,31 @@ router.get('/data', async function (req, res) {
     //data now lives here
     //practice querrying in the console
 
+    // try{
+    //     const num = TableExtract();
+    //     console.log(num);
+    // }catch (err){
+    //        console.log(err)
+    //      }
+
+    const results = [];
+    db.all(sql,[1], (err,rows) => {
+        if (err) {
+            throw err;
+        } else {
+            // console.log("read from experiment: " + row.date  + "  "+ row.val + "  " + row.day );
+            rows.forEach((row) => {
+                results.push(row.val);
+            });
+        }
+        console.log(results);
+        res.send(JSON.stringify(results));
+    });
+
     //NO MORE SSR
     const numbers = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
-    res.send(JSON.stringify(numbers));
+    console.log(numbers);
+   // res.send(JSON.stringify(results));
     // try{
     //   const image = await createImage()
     //   //res.type("image/png")
