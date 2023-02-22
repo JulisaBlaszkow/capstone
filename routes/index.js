@@ -120,6 +120,10 @@ let sql = "SELECT x date, " +
 
 //let results = [];
 
+
+//Table Extract worked until an attempt was made to call it inside router.get ()
+// and then it decided it didn't know what db.all was and i got db.all is not a function smhh
+
 // function TableExtract (db, callback){
 //
 //     db.all(sql,[1], (err,rows) => {
@@ -151,56 +155,59 @@ let sql = "SELECT x date, " +
 //     return Extractedval
 // })
 
-router.get('/data', async function (req, res) {
-    //replace random numbers with stuff from the database.
-    //query database within the function
-    //(maybe need to loop through rows)
-    //0. make the chart look like what i want, with static random data
-    //2. successfully console log the data and that it looks like data that should go into the chart
-    //3. instead of printing it then JSON Stringify it and and send it as a response
+//replace random numbers with stuff from the database.
+//query database within the function
+//(maybe need to loop through rows)
+//0. make the chart look like what i want, with static random data
+//2. successfully console log the data and that it looks like data that should go into the chart
+//3. instead of printing it then JSON Stringify it and and send it as a response
 
-    //http://localhost:3000/   chart now lives here
-    //data now lives here
-    //practice querrying in the console
+//http://localhost:3000/   chart now lives here
+//data now lives here
+//practice querrying in the console
 
-    // try{
-    //     const num = TableExtract();
-    //     console.log(num);
-    // }catch (err){
-    //        console.log(err)
-    //      }
+for(let daycounter = 1; daycounter <=3;daycounter++){
+    console.log("it is day:   "+daycounter);
+    testfunc(daycounter);
+}
+function testfunc(current){
+    router.get('/data', async function (req, res) {
+        const results = [];
+        db.all(sql,[current], (err,rows) => {
+            if (err) {
+                throw err;
+            } else {
+                // console.log("read from experiment: " + row.date  + "  "+ row.val + "  " + row.day );
+                rows.forEach((row) => {
+                    results.push(row.val);
+                });
+            }
+            console.log("sending results for day " +current+"where val is "+ results);
+            res.send(JSON.stringify(results));
+        });
 
-    const results = [];
-    db.all(sql,[1], (err,rows) => {
-        if (err) {
-            throw err;
-        } else {
-            // console.log("read from experiment: " + row.date  + "  "+ row.val + "  " + row.day );
-            rows.forEach((row) => {
-                results.push(row.val);
-            });
-        }
-        console.log(results);
-        res.send(JSON.stringify(results));
+
+
+
+        //NO MORE SSR
+        // const numbers = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
+        //console.log(numbers);
+        // res.send(JSON.stringify(results));
+        // try{
+        //   const image = await createImage()
+        //   //res.type("image/png")
+        //   //res.send(image)
+        //
+        // }catch (err){
+        //   console.log(err)
+        // }
+        //
+        // //res.send("hello world")
+        // console.log('hihihih');
+        // //console.log(req.body);
     });
 
-    //NO MORE SSR
-    const numbers = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
-    console.log(numbers);
-   // res.send(JSON.stringify(results));
-    // try{
-    //   const image = await createImage()
-    //   //res.type("image/png")
-    //   //res.send(image)
-    //
-    // }catch (err){
-    //   console.log(err)
-    // }
-    //
-    // //res.send("hello world")
-    // console.log('hihihih');
-    // //console.log(req.body);
-});
+}
 
 
 
