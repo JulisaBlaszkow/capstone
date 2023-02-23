@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const GoogleChartsNode = require('google-charts-node');
+//const GoogleChartsNode = require('google-charts-node');
+
+
+
 const bodyParser = require('body-parser');
 const canvas = require('canvas');
 const width = 1000;
@@ -115,8 +118,8 @@ async function createImage() {
 let sql = "SELECT x date, " +
     "y val, " +
     "z day  " +
-    "FROM experiment " +
-    " WHERE z = ?";
+    "FROM experiment "
+;
 
 //let results = [];
 
@@ -166,26 +169,28 @@ let sql = "SELECT x date, " +
 //data now lives here
 //practice querrying in the console
 
-for(let daycounter = 1; daycounter <=3;daycounter++){
-    console.log("it is day:   "+daycounter);
-    testfunc(daycounter);
-}
-function testfunc(current){
-    router.get('/data', async function (req, res) {
-        const results = [];
-        db.all(sql,[current], (err,rows) => {
+
+
+
+router.get('/data', async function (req, res) {
+    const results = [];
+    try {
+        db.all(sql, [], (err, rows) => {
             if (err) {
                 throw err;
             } else {
                 // console.log("read from experiment: " + row.date  + "  "+ row.val + "  " + row.day );
                 rows.forEach((row) => {
-                    results.push(row.val);
+                    results.push([row.date, row.val]);
                 });
             }
-            console.log("sending results for day " +current+"where val is "+ results);
-            res.send(JSON.stringify(results));
+            //res.send(JSON.stringify(results));
+            console.log(results);
+            res.json(results);
         });
-
+    }catch (err){
+           console.log(err)
+         }
 
 
 
@@ -207,7 +212,7 @@ function testfunc(current){
         // //console.log(req.body);
     });
 
-}
+
 
 
 
