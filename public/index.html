@@ -56,23 +56,33 @@
     //     return json.map(row => row.y)
     // };
 
-    let data = {
-        labels:{},
+
+    const data = {
+        labels:[],
             datasets: [{
             label: 'y',
-            data: {}
+            data: []
         }
         ]
     }
     const config = {
         type: 'line',
         data: data,
+            // {
+            // labels:{},
+            // datasets: [{
+            //     label: 'y',
+            //     data: {}
+            // }
+            //]
+        //},
         options: {
             scales: {
                 x: {
                     type: 'time',
                 }
             },
+
             // animation: false,
             // scaleOverride: true,
             // scaleSteps: 10,
@@ -85,29 +95,55 @@
 
 
 
-
-
+    function addData(chart,label,data){
+      chart.data.labels.push(label);
+      chart.data.datasets.forEach((dataset) => {
+          dataset.data.push(data);
+      });
+      chart.update();
+    };
+    let i = 0;
     setInterval(async function () {
         // if (chart != null) {
         //     chart.destroy();
         // }
-        chart.destroy();
+        //chart.destroy();
         const response = await fetch("http://localhost:3000/data");
-        //const json = await response.json();
         const json = await response.json();
+        //chart.data.datasets[0].data = json;
+        const times = json.map(row => row.x);
+        const vals = json.map(row => row.y);
 
-        chart.data.datasets.forEach(dataset => {
-            dataset.data = json.map(row => row.y);
-            console.log("hiii"+(json.map(row => row.y)));
-            //dataset.data.shift();
+        // const newlabel = (Math.random() + 1).toString(36).substring(7);
+        // const newdata = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+        const newlabel = times[i];
+        const newdata = vals[i];
+        times.shift();
+        vals.shift();
 
-        });
+        addData(chart,newlabel,newdata);
+        i++;
+        // console.log(times[3]);
+        // console.log(vals[3]);
+        // console.log(csv);
+        // console.log(csvToChartData(csv));
+        // console.log(json);
 
-        chart.data.labels = (json.map(row => row.x));
-        console.log("hi"+(json.map(row => row.x)));
+
+        //chart.update();
+
+        // chart.data.datasets.forEach(dataset => {
+        //     dataset.data = json.map(row => row.y);
+        //     //console.log("hiii"+(json.map(row => row.y)));
+        //     //dataset.data.shift();
+        //
+        // });
+        //
+        // chart.data.labels = (json.map(row => row.x));
+        //console.log("hi"+(json.map(row => row.x)));
         //chart.data.labels.shift();
 
-        chart = new Chart(ctx, config);
+        //chart = new Chart(ctx, config);
 
         //patienceeee
    }, 3000);
