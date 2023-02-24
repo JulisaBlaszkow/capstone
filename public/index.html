@@ -57,21 +57,21 @@
 
         const response = await fetch("http://localhost:3000/data");
         const json = await response.json();
-        const hii = [
-            {x: 1675455378, y: 2 },
-            {x: 1675455382, y: 2 },
-            {x: 1675455388, y: 122 },
-            {x: 1675455393, y: 132 },
-            {x: 1675455398, y: 24 },
-        ];
+        // const hii = [
+        //     {x: 1675455378, y: 2 },
+        //     {x: 1675455382, y: 2 },
+        //     {x: 1675455388, y: 122 },
+        //     {x: 1675455393, y: 132 },
+        //     {x: 1675455398, y: 24 },
+        // ];
 
         chart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: hii.map(row => row.x),
+                labels: json.map(row => row.x),
                 datasets: [{
                     label: 'y',
-                    data: hii.map(row => row.y)
+                    data: json.map(row => row.y)
                 }
                 ]
             },

@@ -181,7 +181,7 @@ router.get('/data', async function (req, res) {
             } else {
                 // console.log("read from experiment: " + row.date  + "  "+ row.val + "  " + row.day );
                 rows.forEach((row) => {
-                    results.push([row.date, row.val]);
+                    results.push({x: row.date, y: row.val});
                 });
             }
             //res.send(JSON.stringify(results));
