@@ -45,70 +45,70 @@
 
 
     const ctx = document.getElementById('myChart');
+    // const response = await fetch("http://localhost:3000/data");
+    // const json = await response.json();
+    // const response = {};
+   // const json = {};
+    // const generatelabels = (json) =>{
+    //     return json.map(row => row.x)
+    // };
+    // const generatedata = (json) =>{
+    //     return json.map(row => row.y)
+    // };
 
-    let chart = null;
+    let data = {
+        labels:{},
+            datasets: [{
+            label: 'y',
+            data: {}
+        }
+        ]
+    }
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+            scales: {
+                x: {
+                    type: 'time',
+                }
+            },
+            // animation: false,
+            // scaleOverride: true,
+            // scaleSteps: 10,
+            // scaleStartValue: 0
+        }
+    };
+
+   // let chart = null;
+    let chart = new Chart(ctx, config);
+
+
+
 
 
     setInterval(async function () {
-        if (chart != null) {
-            chart.destroy();
-        }
-
-
+        // if (chart != null) {
+        //     chart.destroy();
+        // }
+        chart.destroy();
         const response = await fetch("http://localhost:3000/data");
+        //const json = await response.json();
         const json = await response.json();
-        // const hii = [
-        //     {x: 1675455378, y: 2 },
-        //     {x: 1675455382, y: 2 },
-        //     {x: 1675455388, y: 122 },
-        //     {x: 1675455393, y: 132 },
-        //     {x: 1675455398, y: 24 },
-        // ];
 
-        chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: json.map(row => row.x),
-                datasets: [{
-                    label: 'y',
-                    data: json.map(row => row.y)
-                }
-                ]
-            },
+        chart.data.datasets.forEach(dataset => {
+            dataset.data = json.map(row => row.y);
+            console.log("hiii"+(json.map(row => row.y)));
+            //dataset.data.shift();
 
-
-
-            options: {
-                scales: {
-                    x: {
-                        type: 'time',
-
-                        //position: 'bottom'
-                    }
-                }
-            }
         });
 
+        chart.data.labels = (json.map(row => row.x));
+        console.log("hi"+(json.map(row => row.x)));
+        //chart.data.labels.shift();
+
+        chart = new Chart(ctx, config);
+
         //patienceeee
-
-        // chart = new Chart(ctx, {
-        //     type: 'bar',
-        //     data: {
-        //         labels: ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine','ten', 'eleven','twelve'],
-        //         datasets: [{
-        //             label: '# of Votes',
-        //             data: json,
-        //             borderWidth: 1
-        //         }]
-        //     },
-        //     options: {
-        //         scales: {
-        //             y: {
-        //                 beginAtZero: true
-        //             }
-        //         }
-        //     }
-        // });
-
-   }, 5000);
+   }, 3000);
 </script>
