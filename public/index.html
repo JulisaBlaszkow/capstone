@@ -45,16 +45,6 @@
 
 
     const ctx = document.getElementById('myChart');
-    // const response = await fetch("http://localhost:3000/data");
-    // const json = await response.json();
-    // const response = {};
-   // const json = {};
-    // const generatelabels = (json) =>{
-    //     return json.map(row => row.x)
-    // };
-    // const generatedata = (json) =>{
-    //     return json.map(row => row.y)
-    // };
 
 
     const data = {
@@ -68,14 +58,7 @@
     const config = {
         type: 'line',
         data: data,
-            // {
-            // labels:{},
-            // datasets: [{
-            //     label: 'y',
-            //     data: {}
-            // }
-            //]
-        //},
+
         options: {
             scales: {
                 x: {
@@ -102,7 +85,18 @@
       });
       chart.update();
     };
+
+    // function removeData(chart) {
+    //     chart.data.labels.pop();
+    //     chart.data.datasets.forEach((dataset) => {
+    //         dataset.data.pop();
+    //     });
+    //     chart.update();
+    // }
+
     let i = 0;
+
+
     setInterval(async function () {
         // if (chart != null) {
         //     chart.destroy();
@@ -110,7 +104,8 @@
         //chart.destroy();
         const response = await fetch("http://localhost:3000/data");
         const json = await response.json();
-        //chart.data.datasets[0].data = json;
+        //chart.data.datasets[i].data = json;
+        chart.update();
         const times = json.map(row => row.x);
         const vals = json.map(row => row.y);
 
@@ -118,33 +113,16 @@
         // const newdata = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
         const newlabel = times[i];
         const newdata = vals[i];
-        times.shift();
-        vals.shift();
+        //times.shift();
+        //vals.shift();
 
         addData(chart,newlabel,newdata);
         i++;
-        // console.log(times[3]);
-        // console.log(vals[3]);
-        // console.log(csv);
-        // console.log(csvToChartData(csv));
-        // console.log(json);
+        console.log(i);
 
-
-        //chart.update();
-
-        // chart.data.datasets.forEach(dataset => {
-        //     dataset.data = json.map(row => row.y);
-        //     //console.log("hiii"+(json.map(row => row.y)));
-        //     //dataset.data.shift();
-        //
-        // });
-        //
-        // chart.data.labels = (json.map(row => row.x));
-        //console.log("hi"+(json.map(row => row.x)));
-        //chart.data.labels.shift();
 
         //chart = new Chart(ctx, config);
 
         //patienceeee
-   }, 3000);
+   }, 1000);
 </script>
