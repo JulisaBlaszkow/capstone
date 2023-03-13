@@ -121,10 +121,10 @@ async function createImage() {
 }
 
 
-let sql = "SELECT x date,\n" +
-    "       y val\n" +
-    "FROM demoTable\n "
-;
+// let sql = "SELECT x date,\n" +
+//     "       y val\n" +
+//     "FROM demoTable\n "
+// ;
 
 //let results = [];
 
@@ -174,8 +174,17 @@ let sql = "SELECT x date,\n" +
 //data now lives here
 //practice querrying in the console
 
+// let sql = "SELECT x date,\n" +
+//     "       y val\n" +
+//     "FROM demoTable\n "
+// ;
 
-
+let sql = "SELECT ID, x date, y val\n" +
+    "FROM demoTable\n" +
+    "WHERE x >= IFNULL((SELECT x\n" +
+    "                   FROM demoTable AS T2\n" +
+    "                   ORDER BY x DESC\n" +
+    "                   LIMIT 1 OFFSET 30),0)";
 
 router.get('/data', async function (req, res) {
     const results = [];
@@ -184,8 +193,9 @@ router.get('/data', async function (req, res) {
             if (err) {
                 throw err;
             } else {
-                // console.log("read from experiment: " + row.date  + "  "+ row.val + "  " + row.day );
+
                 rows.forEach((row) => {
+                    console.log(row.date, + "   "+ row.val);
                     results.push({x: row.date, y: row.val});
                 });
             }

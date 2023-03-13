@@ -85,14 +85,18 @@
 
 
     function addData(chart,label,data){
-      chart.data.labels.push(label);
-      chart.data.datasets.forEach((dataset) => {
-          dataset.data.push(data);
-      });
+
+            chart.data.labels.push(label);
+            chart.data.datasets.forEach((dataset) => {
+                dataset.data.push(data);
+            });
+
+
       chart.update();
     };
 
-    // function hi (sad){
+    // function hi (){
+    //
     //     chart.data.datasets[0].data = sad;
     //     chart.update();
     // }
@@ -120,23 +124,35 @@
 
         // const newlabel = (Math.random() + 1).toString(36).substring(7);
         // const newdata = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
-
-        const newlabel = times[i];
-        const newdata = vals[i];
+        // let newlabel = [];
+        // let newdata = [];
+        //
         // v.push(times[i]);
         // l.push(vals[i]);
 
         //times.shift();
         //vals.shift();
-        if (i<= 80){
-        addData(chart,newlabel,newdata);
-            i++;
-            console.log(i);
+
+        const newlabel = times[i];
+        const newdata = vals[i];
+        if (i< 30){
+         addData(chart,newlabel,newdata);
+
+              i++;
+              console.log(i);
         };
 
 
+        // let woosh = [];
+        // for(let i = 0; i<=30; i++) {
+        //     woosh.push(json[i]);
+        // }
+        // console.log(woosh);
+        // chart.data.datasets[0].data = woosh;
+        //
+        // chart.update();
 
-        //chart = new Chart(ctx, config);
+       // chart = new Chart(ctx, config);
 
         //patienceeee
    }, 1000);
