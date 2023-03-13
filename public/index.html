@@ -46,11 +46,17 @@
 
     const ctx = document.getElementById('myChart');
 
+    let i = 0;
+    let v = [];
+    let l = [];
+    let s = 12;
 
     const data = {
-        labels:[],
+        labels: [],
+        //labels:l,
             datasets: [{
             label: 'y',
+                //data: v
             data: []
         }
         ]
@@ -86,6 +92,10 @@
       chart.update();
     };
 
+    // function hi (sad){
+    //     chart.data.datasets[0].data = sad;
+    //     chart.update();
+    // }
     // function removeData(chart) {
     //     chart.data.labels.pop();
     //     chart.data.datasets.forEach((dataset) => {
@@ -94,35 +104,42 @@
     //     chart.update();
     // }
 
-    let i = 0;
 
-
+   //
     setInterval(async function () {
         // if (chart != null) {
         //     chart.destroy();
         // }
         //chart.destroy();
         const response = await fetch("http://localhost:3000/data");
+        //const response = await fetch("/data");
         const json = await response.json();
-        //chart.data.datasets[i].data = json;
-        chart.update();
+
         const times = json.map(row => row.x);
         const vals = json.map(row => row.y);
 
         // const newlabel = (Math.random() + 1).toString(36).substring(7);
         // const newdata = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+
         const newlabel = times[i];
         const newdata = vals[i];
+        // v.push(times[i]);
+        // l.push(vals[i]);
+
         //times.shift();
         //vals.shift();
-
+        if (i<= 80){
         addData(chart,newlabel,newdata);
-        i++;
-        console.log(i);
+            i++;
+            console.log(i);
+        };
+
 
 
         //chart = new Chart(ctx, config);
 
         //patienceeee
    }, 1000);
+   //
+
 </script>

@@ -15,11 +15,7 @@ const port = 3000;
 //app.use(bodyParser.urlencoded({ extended: false }));
 //app.use(bodyParser.json());
 
-//router.get('/',(req,res) => {
-//  res.send("hello world")
-//  console.log('hihihih');
-//  console.log(req.body);
-//});
+
 
 //app.listen(port, () => console.log(`Hello world app listening on port ${port}!`));
 
@@ -41,24 +37,34 @@ let db = new sqlite3.Database('data.db', (err) => {
 //   console.log('close the databases connection');
 // });
 
+// router.get('/',(req,res) => {
+//     res.send("hello world")
+//     console.log('hihihih');
+//     console.log(req.body);
+// });
+
 /* GET home page. */
 router.post('/', function (req, res, next) {
-
+    console.log("asdfljjasldfjalsdjf");
     console.log("HIIII: " + JSON.stringify(req.body));
     console.log("test" + req.body.sensor, req.body.time, req.body.data[0])
     res.render('index', {title: 'Express'});
-    // db.each('SELECT * from dennis;' , function(err, rows){
+
+    // db.each('SELECT * from demotwo;' , function(err, rows){
     //   console.log(rows);
     // })
     // db.run('' , [], function (res, e) {});
-    db.run(`INSERT INTO dennis(x, y) VALUES (?, ?);`, [[req.body.time], req.body.data[0]], function (err) {
+
+
+
+    db.run(`INSERT INTO demoTable(x, y) VALUES (?, ?);`, [[req.body.time], req.body.data[0]], function (err) {
         if (err) {
             return console.log(err.message);
         }
         // get the last insert id
         console.log(`A row has been inserted with rowid ${this.lastID}`);
     });
-});
+ });
 
 
 const chartCallback = (ChartJs) => {
@@ -115,10 +121,9 @@ async function createImage() {
 }
 
 
-let sql = "SELECT x date, " +
-    "y val, " +
-    "z day  " +
-    "FROM experiment "
+let sql = "SELECT x date,\n" +
+    "       y val\n" +
+    "FROM demoTable\n "
 ;
 
 //let results = [];
@@ -185,7 +190,7 @@ router.get('/data', async function (req, res) {
                 });
             }
             //res.send(JSON.stringify(results));
-            console.log(results);
+            //console.log(results);
             res.json(results);
         });
     }catch (err){
