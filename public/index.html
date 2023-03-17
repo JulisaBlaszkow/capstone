@@ -8,8 +8,16 @@
 
 </head>
 <body>
-<h1 id="hello"> hello</h1>
-<canvas id="myChart"></canvas>
+<div>
+    <h1 id="hello"> hello</h1>
+    <canvas id="Chart1"></canvas>
+</div>
+<div>
+    <h1 id="hi hi"> hello</h1>
+    <canvas id="Chart2"></canvas>
+</div>
+
+
 <!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.js"></script>
 
@@ -44,7 +52,8 @@
 <script>
 
 
-    const ctx = document.getElementById('myChart');
+    const ctx1 = document.getElementById('Chart1').getContext('2d');
+
 
     let i = 0;
     let v = [];
@@ -71,7 +80,6 @@
                     type: 'time',
                 }
             },
-
             // animation: false,
             // scaleOverride: true,
             // scaleSteps: 10,
@@ -79,8 +87,49 @@
         }
     };
 
-   // let chart = null;
-    let chart = new Chart(ctx, config);
+
+
+
+    const ctx2 = document.getElementById('Chart2').getContext('2d');
+    const data2 = {
+        labels: ['Red','Blue','Yellow','Green','Purple','Orange'],
+        datasets: [{
+            label:'baar',
+            data: [],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderWidth: 1
+
+        }]
+    };
+
+    const config2 = {
+        type: 'bar',
+        data: data2,
+        options:{
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+    }
+    };
+
+
 
 
 
@@ -90,8 +139,6 @@
             chart.data.datasets.forEach((dataset) => {
                 dataset.data.push(data);
             });
-
-
       chart.update();
     };
 
@@ -107,20 +154,28 @@
     //     });
     //     chart.update();
     // }
+    const chart2 = new Chart(ctx2, config2);
+    setInterval(async  function (){
+        const bars = await fetch("http://localhost:3000/energy");
+        const json = await bars.json();
+        console.log("Hiii" + json);
+        chart2.data.datasets[0].data = json;
+        //chart2.data.datasets[0].data = [0.1,0.2,0.3,0.4,0.5,0.6];
+        //console.log(chart2.data.datasets[0].data);
+        chart2.update();
 
-
+    }, 3000);
    //
+    const chart = new Chart(ctx1, config);
     setInterval(async function () {
-        // if (chart != null) {
-        //     chart.destroy();
-        // }
-        //chart.destroy();
+
         const response = await fetch("http://localhost:3000/data");
         //const response = await fetch("/data");
         const json = await response.json();
 
         const times = json.map(row => row.x);
         const vals = json.map(row => row.y);
+        //console.log(vals);
 
         // const newlabel = (Math.random() + 1).toString(36).substring(7);
         // const newdata = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
@@ -133,14 +188,14 @@
         //times.shift();
         //vals.shift();
 
-        const newlabel = times[i];
-        const newdata = vals[i];
-        if (i< 30){
-         addData(chart,newlabel,newdata);
-
-              i++;
-              console.log(i);
-        };
+        // const newlabel = times[i];
+        // const newdata = vals[i];
+        // if (i< 30){
+        //  addData(chart,newlabel,newdata);
+        //
+        //       i++;
+        //       console.log(i);
+        // };
 
 
         // let woosh = [];
@@ -148,14 +203,17 @@
         //     woosh.push(json[i]);
         // }
         // console.log(woosh);
-        // chart.data.datasets[0].data = woosh;
-        //
-        // chart.update();
 
-       // chart = new Chart(ctx, config);
+
+        chart.data.datasets[0].data = json;
+
+        chart.update();
+
 
         //patienceeee
-   }, 1000);
-   //
+
+
+   }, 3000);
+
 
 </script>

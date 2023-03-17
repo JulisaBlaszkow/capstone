@@ -184,7 +184,7 @@ let sql = "SELECT ID, x date, y val\n" +
     "WHERE x >= IFNULL((SELECT x\n" +
     "                   FROM demoTable AS T2\n" +
     "                   ORDER BY x DESC\n" +
-    "                   LIMIT 1 OFFSET 30),0)";
+    "                   LIMIT 1 OFFSET 100),0)";
 
 router.get('/data', async function (req, res) {
     const results = [];
@@ -195,37 +195,58 @@ router.get('/data', async function (req, res) {
             } else {
 
                 rows.forEach((row) => {
-                    console.log(row.date, + "   "+ row.val);
+                    //console.log(row.date, + "   "+ row.val);
                     results.push({x: row.date, y: row.val});
                 });
             }
             //res.send(JSON.stringify(results));
-            //console.log(results);
+           // console.log(results);
             res.json(results);
         });
     }catch (err){
            console.log(err)
          }
-
-
-
-        //NO MORE SSR
-        // const numbers = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
-        //console.log(numbers);
-        // res.send(JSON.stringify(results));
-        // try{
-        //   const image = await createImage()
-        //   //res.type("image/png")
-        //   //res.send(image)
-        //
-        // }catch (err){
-        //   console.log(err)
-        // }
-        //
-        // //res.send("hello world")
-        // console.log('hihihih');
-        // //console.log(req.body);
     });
+
+router.get('/energy', async function (req, res) {
+    const timestamps = [];
+    const values = [];
+    const out = [];
+    const outout = [];
+    try {
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                throw err;
+            } else {
+
+                rows.forEach((row) => {
+                    //console.log(row.date, + "   "+ row.val);
+                    //results.push({x: row.date, y: row.val});
+                    timestamps.push(row.date);
+                    values.push(row.val);
+                });
+
+                while (values.length>0){
+                    const next = values.splice(0,20)
+                    //const timeanchor = timestamps.splice(0,20)
+                    const sum = next.reduce((a,b) => {
+                        return a + b;
+                    },0);
+                    out.push(sum);
+                }
+
+            }
+            //res.send(JSON.stringify(results));
+            console.log("output" + out);
+            res.json(out);
+        });
+    }catch (err){
+        console.log(err)
+    }
+});
+
+
+
 
 
 
