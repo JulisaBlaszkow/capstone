@@ -53,13 +53,13 @@ router.post('/', function (req, res, next) {
 
 
 
-    // db.run(`INSERT INTO demotwo(x, y) VALUES (?, ?);`, [[req.body.time], req.body.data[0]], function (err) {
-    //     if (err) {
-    //         return console.log(err.message);
-    //     }
-    //     // get the last insert id
-    //     console.log(`A row has been inserted with rowid ${this.lastID}`);
-    // });
+    db.run(`INSERT INTO demotwo(x, y) VALUES (?, ?);`, [[req.body.time], req.body.data[0]], function (err) {
+        if (err) {
+            return console.log(err.message);
+        }
+        // get the last insert id
+        console.log(`A row has been inserted with rowid ${this.lastID}`);
+    });
  });
 
 
@@ -79,9 +79,9 @@ router.post('/', function (req, res, next) {
 // ;
 
 let sql = "SELECT ID, x date, y val\n" +
-    "FROM demoTable\n" +
+    "FROM demotwo\n" +
     "WHERE x >= IFNULL((SELECT x\n" +
-    "                   FROM demoTable AS T2\n" +
+    "                   FROM demotwo AS T2\n" +
     "                   ORDER BY x DESC\n" +
     "                   LIMIT 1 OFFSET 99),0)";
 
