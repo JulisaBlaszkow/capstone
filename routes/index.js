@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-//const GoogleChartsNode = require('google-charts-node');
-
 
 
 const bodyParser = require('body-parser');
@@ -14,8 +12,6 @@ const port = 3000;
 
 //app.use(bodyParser.urlencoded({ extended: false }));
 //app.use(bodyParser.json());
-
-
 
 //app.listen(port, () => console.log(`Hello world app listening on port ${port}!`));
 
@@ -57,118 +53,21 @@ router.post('/', function (req, res, next) {
 
 
 
-    db.run(`INSERT INTO demoTable(x, y) VALUES (?, ?);`, [[req.body.time], req.body.data[0]], function (err) {
-        if (err) {
-            return console.log(err.message);
-        }
-        // get the last insert id
-        console.log(`A row has been inserted with rowid ${this.lastID}`);
-    });
+    // db.run(`INSERT INTO demotwo(x, y) VALUES (?, ?);`, [[req.body.time], req.body.data[0]], function (err) {
+    //     if (err) {
+    //         return console.log(err.message);
+    //     }
+    //     // get the last insert id
+    //     console.log(`A row has been inserted with rowid ${this.lastID}`);
+    // });
  });
 
 
-const chartCallback = (ChartJs) => {
-    console.log('chart rebuilt ');
-}
-
-async function createImage() {
-    const labels = Utils.months({count: 7});
-    const data = {
-        labels: labels,
-        datasets: [{
-            label: 'My First Dataset',
-            data: [65, 59, 80, 81, 56, 55, 40],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(255, 205, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(201, 203, 207, 0.2)'
-            ],
-            borderColor: [
-                'rgb(255, 99, 132)',
-                'rgb(255, 159, 64)',
-                'rgb(255, 205, 86)',
-                'rgb(75, 192, 192)',
-                'rgb(54, 162, 235)',
-                'rgb(153, 102, 255)',
-                'rgb(201, 203, 207)'
-            ],
-            borderWidth: 1
-        }]
-    };
-    const config = {
-        type: 'bar',
-        data: data,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        },
-    };
 
 
-    //const dataUrl = await caguration); // convasRenderService.renderToBuffer(confinverts chart to image
-    // console.log(dataUrl); this does not actually print anything here
-    const dataUrl = "data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUA\n" +
-        "    AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO\n" +
-        "        9TXL0Y4OHwAAAABJRU5ErkJggg==\" alt=\"Red dot"
-    return dataUrl;
-}
 
 
-// let sql = "SELECT x date,\n" +
-//     "       y val\n" +
-//     "FROM demoTable\n "
-// ;
 
-//let results = [];
-
-
-//Table Extract worked until an attempt was made to call it inside router.get ()
-// and then it decided it didn't know what db.all was and i got db.all is not a function smhh
-
-// function TableExtract (db, callback){
-//
-//     db.all(sql,[1], (err,rows) => {
-//         if (err){
-//             throw err;
-//         }
-//         else{
-//             // console.log("read from experiment: " + row.date  + "  "+ row.val + "  " + row.day );
-//             rows.forEach((row)=>{
-//                 results.push(row.val);
-//             });
-//         }
-//         console.log(results);
-//
-//     });
-// }
-
-// TableExtract(db, function(err,content){
-//     if(err) throw (err);
-//     let Extractedval = content;
-//     console.log = ("wheee" , Extractedval);
-//     return Extractedval
-// });
-
-// const TableInside = TableExtract(db, function(err,content){
-//     if(err) throw (err);
-//     let Extractedval = content;
-//     console.log = ("wheee" , Extractedval);
-//     return Extractedval
-// })
-
-//replace random numbers with stuff from the database.
-//query database within the function
-//(maybe need to loop through rows)
-//0. make the chart look like what i want, with static random data
-//2. successfully console log the data and that it looks like data that should go into the chart
-//3. instead of printing it then JSON Stringify it and and send it as a response
 
 //http://localhost:3000/   chart now lives here
 //data now lives here
@@ -184,7 +83,7 @@ let sql = "SELECT ID, x date, y val\n" +
     "WHERE x >= IFNULL((SELECT x\n" +
     "                   FROM demoTable AS T2\n" +
     "                   ORDER BY x DESC\n" +
-    "                   LIMIT 1 OFFSET 100),0)";
+    "                   LIMIT 1 OFFSET 99),0)";
 
 router.get('/data', async function (req, res) {
     const results = [];
@@ -200,7 +99,7 @@ router.get('/data', async function (req, res) {
                 });
             }
             //res.send(JSON.stringify(results));
-           // console.log(results);
+           //console.log(results);
             res.json(results);
         });
     }catch (err){
@@ -209,10 +108,11 @@ router.get('/data', async function (req, res) {
     });
 
 router.get('/energy', async function (req, res) {
-    const timestamps = [];
+    const finalout = [];
     const values = [];
     const out = [];
     const outout = [];
+    const timestamps = [];
     try {
         db.all(sql, [], (err, rows) => {
             if (err) {
@@ -224,21 +124,43 @@ router.get('/energy', async function (req, res) {
                     //results.push({x: row.date, y: row.val});
                     timestamps.push(row.date);
                     values.push(row.val);
+                    //outout.push(0);
                 });
-
+                console.log(values.length);
                 while (values.length>0){
                     const next = values.splice(0,20)
                     //const timeanchor = timestamps.splice(0,20)
                     const sum = next.reduce((a,b) => {
-                        return a + b;
+                            return a + b;
+
                     },0);
                     out.push(sum);
+
                 }
 
             }
+
             //res.send(JSON.stringify(results));
-            console.log("output" + out);
-            res.json(out);
+            console.log("output    " + out);
+            let n = 0;
+            let m = 0;
+            let u =0;
+            for(n=0;n<out.length;n++){
+                u = out[n];
+                //console.log("temp" +temp);
+                for(m=0;m<20;m++){
+                    //console.log("temp" +temp);
+                    outout.push(u);
+                }
+
+            }
+            //console.log("OUTOUT    " + outout);
+            timestamps.forEach((t,o) => {
+                finalout.push({x: timestamps[o], y:outout[o]})
+            });
+            //console.log(finalout)
+
+            res.json(finalout);
         });
     }catch (err){
         console.log(err)
