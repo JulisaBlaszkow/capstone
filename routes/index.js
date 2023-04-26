@@ -3,7 +3,7 @@ const router = express.Router();
 
 
 const bodyParser = require('body-parser');
-const canvas = require('canvas');
+//const canvas = require('canvas');
 const width = 1000;
 const height = 1000;
 
