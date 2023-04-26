@@ -83,7 +83,7 @@ let sql = "SELECT ID, x date, y val\n" +
     "WHERE x >= IFNULL((SELECT x\n" +
     "                   FROM demotwo AS T2\n" +
     "                   ORDER BY x DESC\n" +
-    "                   LIMIT 1 OFFSET 99),0)";
+    "                   LIMIT 1 OFFSET 339),0)";
 
 router.get('/data', async function (req, res) {
     const results = [];
@@ -128,7 +128,7 @@ router.get('/energy', async function (req, res) {
                 });
                 console.log(values.length);
                 while (values.length>0){
-                    const next = values.splice(0,20)
+                    const next = values.splice(0,17)
                     //const timeanchor = timestamps.splice(0,20)
                     const sum = next.reduce((a,b) => {
                             return a + b;
@@ -141,14 +141,14 @@ router.get('/energy', async function (req, res) {
             }
 
             //res.send(JSON.stringify(results));
-            console.log("output    " + out);
+            //console.log("output    " + out);
             let n = 0;
             let m = 0;
             let u =0;
             for(n=0;n<out.length;n++){
                 u = out[n];
                 //console.log("temp" +temp);
-                for(m=0;m<20;m++){
+                for(m=0;m<17;m++){
                     //console.log("temp" +temp);
                     outout.push(u);
                 }
