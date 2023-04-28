@@ -126,7 +126,7 @@
 
     const chart2 = new Chart(ctx2, config2);
     setInterval(async  function (){
-        const bars = await fetch("http://localhost:3000/energy");
+        const bars = await fetch("http://localhost:3000/energy?v=1");
         const json = await bars.json();
         //console.log("Hiii" + json);
         chart2.data.datasets[0].data = json;
@@ -139,7 +139,7 @@
     const chart = new Chart(ctx1, config);
     setInterval(async function () {
 
-        const response = await fetch("http://localhost:3000/data");
+        const response = await fetch("http://localhost:3000/data?v=1");
         //const response = await fetch("/data");
         const json = await response.json();
 
