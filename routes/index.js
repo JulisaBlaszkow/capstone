@@ -53,7 +53,7 @@ router.post('/', function (req, res, next) {
 
 
 
-    db.run(`INSERT INTO demotwo(x, y) VALUES (?, ?);`, [[req.body.time], req.body.data[0]], function (err) {
+    db.run(`INSERT INTO dennis(x, y) VALUES (?, ?);`, [[req.body.time], req.body.data[0]], function (err) {
         if (err) {
             return console.log(err.message);
         }
@@ -79,9 +79,9 @@ router.post('/', function (req, res, next) {
 // ;
 
 let sql = "SELECT ID, x date, y val\n" +
-    "FROM demotwo\n" +
+    "FROM dennis\n" +
     "WHERE x >= IFNULL((SELECT x\n" +
-    "                   FROM demotwo AS T2\n" +
+    "                   FROM dennis AS T2\n" +
     "                   ORDER BY x DESC\n" +
     "                   LIMIT 1 OFFSET 339),0)";
 
