@@ -85,7 +85,7 @@ let sql = "SELECT ID, x date, y val\n" +
     "                   ORDER BY x DESC\n" +
     "                   LIMIT 1 OFFSET 339),0)";
 
-router.get('/data', async function (req, res) {
+router.get('/data?v=1 ', async function (req, res) {
     const results = [];
     try {
         db.all(sql, [], (err, rows) => {
@@ -107,7 +107,7 @@ router.get('/data', async function (req, res) {
          }
     });
 
-router.get('/energy', async function (req, res) {
+router.get('/energy?v=1', async function (req, res) {
     const finalout = [];
     const values = [];
     const out = [];
